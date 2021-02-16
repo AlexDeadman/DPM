@@ -1,6 +1,4 @@
-package game;
-
-import java.util.Arrays;
+package laba1;
 
 public class GameServer {
     private static GameServer instance;

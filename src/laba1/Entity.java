@@ -1,4 +1,4 @@
-package game;
+package laba1;
 
 public class Entity {
     protected String title;

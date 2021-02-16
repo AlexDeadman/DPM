@@ -1,4 +1,4 @@
-package game;
+package laba1;
 
 public class Player extends Entity{
     private String nickname;
