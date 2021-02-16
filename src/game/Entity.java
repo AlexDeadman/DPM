@@ -7,19 +7,21 @@ public class Entity {
     protected int health;
     protected int maxHealth;
     protected int attackDamage;
+    protected double attackDistance;
 
     protected static int idCounter = 0;
     protected final long id;
 
     private boolean agressive;
 
-    public Entity(String title, double posX, double posZ, int health, int maxHealth, int attackDamage, boolean agressive) {
+    public Entity(String title, double posX, double posZ, int health, int maxHealth, int attackDamage, double attackDistance, boolean agressive) {
         this.title = title;
         this.posX = posX;
         this.posZ = posZ;
         this.health = health;
         this.maxHealth = maxHealth;
         this.attackDamage = attackDamage;
+        this.attackDistance = attackDistance;
         this.agressive = agressive;
 
         this.id = idCounter++;
@@ -41,31 +43,24 @@ public class Entity {
 
     // ------------------------------------------------------------------------------------------
 
-    private boolean isNear(Entity currEntity) {
-        return (double) Math.sqrt(
-                Math.pow((this.posX - currEntity.getPosX()), 2) +
-                Math.pow((this.posZ - currEntity.getPosZ()), 2)
-        ) <= 2.0;
+    private double checkDistance(Entity currEntity) {
+        return Math.sqrt(Math.pow((this.posX - currEntity.getPosX()), 2) + Math.pow((this.posZ - currEntity.getPosZ()), 2));
     }
 
     public void attack(Entity attackedEntity) {
         attackedEntity.health -= this.attackDamage + 0.5 * GameServer.getInstance().getDifficulty();
 
-        // TODO: игнорируется instanceof
         if (attackedEntity instanceof Player) {
             if (attackedEntity.health > 0) {
                 attackedEntity.attack(this);
-            } else {
-                System.out.println(
-                        ((Player) attackedEntity).getNickname()  + " was slain by " + this.title
-                );
             }
         }
 
         if (attackedEntity.health <= 0) {
-            System.out.println(
-                    attackedEntity.title + " was slain by " + this.title
-            );
+            String killer = this instanceof Player ? ((Player) this).getNickname() : this.title;
+            String victim = attackedEntity instanceof Player ? ((Player) attackedEntity).getNickname() : attackedEntity.title;
+
+            System.out.println(victim + " was slain by " + killer + " (" + killer + " has " + this.health + " HP)");
         }
     }
 
@@ -77,11 +72,38 @@ public class Entity {
             return;
         }
 
-        // TODO: прописать движение агрессора
         if (this.agressive) {
+            double minDistance = Double.MAX_VALUE;
+            int nearestId = -1;
+
             for (int i = 0; i < entities.length; i++) {
-                if(i != this.id && entities[i] != null && isNear(entities[i])) {
-                        this.attack(entities[i]);
+                if (i == this.id) {
+                    continue;
+                }
+                if (entities[i] != null) {
+                    double distance = checkDistance(entities[i]);
+                    if (distance < minDistance) {
+                        minDistance = distance;
+                        nearestId = i;
+                    }
+                }
+            }
+
+            if (nearestId != -1) {
+                if (minDistance <= attackDistance) {
+                    attack(entities[nearestId]);
+                } else {
+                    if (this.posX - entities[nearestId].posX < 0) {
+                        this.posX++;
+                    } else {
+                        posX--;
+                    }
+
+                    if (this.posZ - entities[nearestId].posZ < 0) {
+                        this.posZ++;
+                    } else {
+                        posZ--;
+                    }
                 }
             }
         }
@@ -111,6 +133,10 @@ public class Entity {
 
     public int getAttackDamage() {
         return attackDamage;
+    }
+
+    public double getAttackDistance() {
+        return attackDistance;
     }
 
     public long getId() {
@@ -147,5 +173,9 @@ public class Entity {
 
     public void setAgressive(boolean agressive) {
         this.agressive = agressive;
+    }
+
+    public void setAttackDistance(double attackDistance) {
+        this.attackDistance = attackDistance;
     }
 }

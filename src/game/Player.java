@@ -3,8 +3,8 @@ package game;
 public class Player extends Entity{
     private String nickname;
 
-    public Player(String nickname, double posX, double posZ, int health, int maxHealth, int attackDamage) {
-        super("player", posX, posZ, health, maxHealth, attackDamage, false);
+    public Player(String nickname, double posX, double posZ, int health, int maxHealth, int attackDamage, double attackDistance) {
+        super("player", posX, posZ, health, maxHealth, attackDamage, attackDistance, false);
         this.nickname = nickname;
     }
 

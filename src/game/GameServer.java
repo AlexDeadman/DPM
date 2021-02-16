@@ -10,28 +10,32 @@ public class GameServer {
     private Entity[] entities;
     private final int updatesQuantity;
     private int currentUpdate = 0;
+    private final int updatesDelay;
 
     public static void main(String[] args) {
         String ip = "127.0.0.1";
         int diff = 1;
+        double stdAttackDistance = 2.0;
         Entity[] humanoidz = new Entity[]{
-                new Entity("stranger_1", 1.0, 1.0, 100, 100, 0, true),
-                new Entity("stranger_2", 5.0, 1.0, 1, 100, 1, true),
-                new Player("CoolNickName_2002", 1.1, 1.1, 100, 100, 20)
+                new Entity("Woman", 1.0, 1.0, 100, 100, 13, stdAttackDistance, true),
+                new Entity("Stranger", 11.0, 11.0, 20, 100, 1, stdAttackDistance, true),
+                new Player("TRUE MAN", 1.1, 1.1, 200, 200, 20, stdAttackDistance),
+                new Entity("EPIC BOSS", 16.0, 13.0, 500, 500, 25, 5.0, true),
         };
 
-        GameServer coolServer = new GameServer(ip, diff, humanoidz, 30);
+        GameServer coolServer = new GameServer(ip, diff, humanoidz, 30, 500);
 
         for (; coolServer.currentUpdate < coolServer.updatesQuantity; coolServer.currentUpdate++) {
             coolServer.updateServer();
         }
     }
 
-    public GameServer(String ip, int difficulty, Entity[] entities, int updatesQuantity) {
+    public GameServer(String ip, int difficulty, Entity[] entities, int updatesQuantity, int updatesDelay) {
         this.ip = ip;
         this.difficulty = difficulty;
         this.entities = entities;
         this.updatesQuantity = updatesQuantity;
+        this.updatesDelay = updatesDelay;
 
         instance = this;
     }
@@ -48,16 +52,16 @@ public class GameServer {
 // --------------------------------------------------------------------------------
 
     public void updateServer() {
+        System.out.println("Server uptime: " + this.getCurrentUpdate());
+
         for (Entity currEntity : this.entities) {
             if (currEntity != null) {
                 currEntity.update();
             }
         }
 
-        System.out.println("Server uptime: " + this.getCurrentUpdate());
-
         try {
-            Thread.sleep(1000);
+            Thread.sleep(this.updatesDelay);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
