@@ -77,23 +77,25 @@ public class GameServer {
     }
 
     public void printEntities() {
-            System.out.println( "\n┌────┬───────────────────┬──────────────┬─────────────────────────┬──────────────────────┐");
+            System.out.println( "\n┌──────┬───────────────────┬────────────┬─────────────────────┬──────────────────────┐");
+            System.out.println(   "│  ID  │       Title       │   Health   │   Position X ; Z    │       Nickname       │");
+            System.out.println(   "├──────┼───────────────────┼────────────┼─────────────────────┼──────────────────────┤");
 
         for (int i = 0; i < entities.length; i++) {
             if (entities[i] == null) {
-                System.out.printf("│%3d │ Dead entity       │              │                         │                      │\n", i);
+                System.out.printf("│ %-4d │ Dead entity       │            │                     │                      │\n", i);
             } else {
-                System.out.printf("│%3d │ Title: %10s │ Health: %4d │ Position: %06.2f;%06.2f",
+                System.out.printf("│ %-4d │ %-17s │ %-10d │ %-9.2f;%9.2f ",
                                 i, entities[i].title, entities[i].health, entities[i].posX, entities[i].posZ
                 );
                 if (entities[i] instanceof Player) {
-                    System.out.printf(" │ Nickname: %10s │\n", ((Player) entities[i]).getNickname());
+                    System.out.printf("│ %-20s │\n", ((Player) entities[i]).getNickname());
                 } else {
-                    System.out.print( " │                      │\n");
+                    System.out.print( "│                      │\n");
                 }
             }
         }
-            System.out.println(   "└────┴───────────────────┴──────────────┴─────────────────────────┴──────────────────────┘");
+            System.out.println(   "└──────┴───────────────────┴────────────┴─────────────────────┴──────────────────────┘");
     }
 
     // --------------------------------------------------------------------------------
