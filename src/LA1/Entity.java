@@ -1,4 +1,4 @@
-package laba1;
+package LA1;
 
 public class Entity {
     protected String title;
@@ -60,7 +60,7 @@ public class Entity {
             String killer = this instanceof Player ? ((Player) this).getNickname() : this.title;
             String victim = attackedEntity instanceof Player ? ((Player) attackedEntity).getNickname() : attackedEntity.title;
 
-            System.out.println(victim + " was slain by " + killer + " (" + killer + " has " + this.health + " HP)");
+            System.out.println("\n" + victim + " was slain by " + killer + " (" + killer + " has " + this.health + " HP)");
         }
     }
 
