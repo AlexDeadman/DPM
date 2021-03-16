@@ -1,10 +1,30 @@
-package LA1;
+package LA2;
 
 public class Player extends Entity{
     private String nickname;
 
-    public Player(String nickname, double posX, double posZ, int health, int maxHealth, int attackDamage, double attackDistance) {
-        super("Player", posX, posZ, health, maxHealth, attackDamage, attackDistance, false);
+    public Player(String nickname,
+                  double posX,
+                  double posZ,
+                  int health,
+                  int maxHealth,
+                  int attackDamage,
+                  double attackDistance,
+                  Entity target,
+                  World world
+    ) {
+        super("Player",
+                posX,
+                posZ,
+                health,
+                maxHealth,
+                attackDamage,
+                attackDistance,
+                false,
+                target,
+                world
+
+        );
         this.nickname = nickname;
     }
 
